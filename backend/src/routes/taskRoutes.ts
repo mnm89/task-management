@@ -5,25 +5,28 @@ import {
   validateCreateTask,
   validateUpdateTask,
 } from "../middleware/validators";
+import { Server } from "socket.io";
 
 const router = Router();
-const taskController = new TaskController();
 
-// Define task routes
-router.post(
-  "/",
-  validateCreateTask,
-  validateRequest,
-  taskController.createTask
-);
-router.get("/", taskController.getTasks);
-router.get("/:id", taskController.getTaskById);
-router.put(
-  "/:id",
-  validateUpdateTask,
-  validateRequest,
-  taskController.updateTask
-);
-router.delete("/:id", taskController.deleteTask);
+export default function taskRoutes(io: Server) {
+  const taskController = new TaskController(io);
 
-export default router;
+  // Define task routes
+  router.post(
+    "/",
+    validateCreateTask,
+    validateRequest,
+    taskController.createTask
+  );
+  router.get("/", taskController.getTasks);
+  router.get("/:id", taskController.getTaskById);
+  router.put(
+    "/:id",
+    validateUpdateTask,
+    validateRequest,
+    taskController.updateTask
+  );
+  router.delete("/:id", taskController.deleteTask);
+  return router;
+}

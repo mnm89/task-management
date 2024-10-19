@@ -16,7 +16,11 @@ const app: Application = express();
 const server = http.createServer(app);
 
 // Set up Socket.IO
-const io = new SocketIOServer(server);
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: "*",
+  },
+});
 configureSockets(io); // Initialize socket configuration
 
 // Global middleware
@@ -27,7 +31,7 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 // Routes
-app.use("/api/tasks", taskRoutes); // Mount task-related routes at /api/tasks
+app.use("/api/tasks", taskRoutes(io)); // Mount task-related routes at /api/tasks
 
 // Handle 404 errors (route not found)
 app.use((req: Request, res: Response, next: NextFunction) => {

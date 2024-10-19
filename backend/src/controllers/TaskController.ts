@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import { TaskService } from "../services/TaskService";
+import { Server } from "socket.io";
 
 export class TaskController {
   private taskService = new TaskService();
+
+  constructor(private io: Server) {}
 
   public createTask = async (req: Request, res: Response) => {
     const { title, description, dueDate } = req.body;
 
     // Simulate creating a task (you'd actually interact with a database here)
     const newTask = await this.taskService.create(title, description, dueDate);
+    this.io.emit("task:created", newTask.id);
 
     res.status(201).json({ task: newTask });
   };
@@ -25,7 +29,7 @@ export class TaskController {
       status,
       dueDate
     );
-
+    this.io.emit("task:updated", updatedTask.id);
     res.status(200).json({ task: updatedTask });
   };
 
@@ -43,6 +47,7 @@ export class TaskController {
   public deleteTask = async (req: Request, res: Response) => {
     const taskId = req.params.id;
     await this.taskService.deleteTask(taskId);
+    this.io.emit("task:deleted", taskId);
     res.sendStatus(200);
   };
 }
