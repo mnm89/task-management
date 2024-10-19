@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Task } from "../models/Task";
 import { getTasks } from "../services/taskService";
 import TaskItem from "./TaskItem";
+import useWebSocket from "../hooks/useWebSocket";
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  useWebSocket(() => fetchTasks());
   const fetchTasks = async () => {
     const data = await getTasks();
     setTasks(data);
