@@ -43,6 +43,6 @@ export class TaskController {
   public deleteTask = async (req: Request, res: Response) => {
     const taskId = req.params.id;
     await this.taskService.deleteTask(taskId);
-    res.status(200);
+    res.sendStatus(200);
   };
 }
