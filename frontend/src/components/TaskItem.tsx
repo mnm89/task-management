@@ -28,7 +28,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onTaskUpdate }) => {
   };
 
   return (
-    <div>
+    <div className="task-item">
       {isEditing ? (
         <>
           <input

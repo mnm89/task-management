@@ -16,7 +16,7 @@ const TaskList: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="task-list-container">
       <h2>Task List</h2>
       {tasks.map((task) => (
         <TaskItem key={task.id} task={task} onTaskUpdate={fetchTasks} />
