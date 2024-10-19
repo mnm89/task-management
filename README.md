@@ -69,8 +69,6 @@ Key Features:
 
 ### 2) Architecture: Modular code structure (controllers, services, middleware)
 
-### 3) Testing: Comprehensive tests (unit and integration)
+### 3) Real-time collaboration: WebSocket-based updates
 
-### 4) Real-time collaboration: WebSocket-based updates
-
-### 5) Best practices: Code quality, error handling, and security
+### 4) Best practices: Code quality, error handling, and security
