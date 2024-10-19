@@ -13,7 +13,10 @@
         "types": [
             "node"
         ], // Include types for Node.js
-        "forceConsistentCasingInFileNames": true // Ensure consistent casing in import statements
+        "forceConsistentCasingInFileNames": true, // Ensure consistent casing in import statements
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
     },
     "include": [
         "src/**/*.ts"
