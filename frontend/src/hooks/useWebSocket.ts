@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000"); // WebSocket server
+const socket = io(process.env.REACT_APP_IO_URL ?? "http://localhost:3000"); // WebSocket server
 
 const useWebSocket = (
   onTaskCreated?: (id: string) => void,
