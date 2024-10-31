@@ -37,15 +37,14 @@ Key Features:
 - Middleware for JWT authentication.
 - TypeORM or Prisma ORM for database integration.
 - Real-time updates using Socket.IO.
-- Unit testing with Jest and Supertest.
 
 ## Frontend (React + TypeScript)
 
 Key Features:
 
-- React hooks with TypeScript (useContext, useReducer).
+- React hooks with TypeScript (useContext, useState, useEffect).
 - React Context API for global state management.
-- Custom hooks for API integration.
+- Custom hooks for Websocket integration.
 - TypeScript generics in custom hooks and reusable components.
 - Styled Components for styling.
 
@@ -62,6 +61,11 @@ Key Features:
         cd frontend
         npm install
         npm start
+
+3. Dummy user for login
+
+        username: user
+        password: password
 
 ## What to Showcase
 
