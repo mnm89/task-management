@@ -1,6 +1,12 @@
+import http from "http";
 import { Server, Socket } from "socket.io";
 
-export const configureSockets = (io: Server) => {
+export function createIOServer(server: http.Server): Server {
+  const io = new Server(server, {
+    cors: {
+      origin: "*",
+    },
+  });
   io.on("connection", (socket: Socket) => {
     console.log(`Client connected: ${socket.id}`);
 
@@ -8,4 +14,5 @@ export const configureSockets = (io: Server) => {
       console.log(`Client disconnected: ${socket.id}`);
     });
   });
-};
+  return io;
+}

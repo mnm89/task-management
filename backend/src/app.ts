@@ -1,27 +1,21 @@
-import express, { Application, Request, Response, NextFunction } from "express";
 import http from "http";
-import { Server as SocketIOServer } from "socket.io";
+import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { configureSockets } from "./sockets"; // Import Socket.IO configuration
-import taskRoutes from "./routes/taskRoutes"; // Task-related routes
 import { errorHandler } from "./middleware/errorHandler"; // Global error handler middleware
 import { NotFoundError } from "./errors/notFoundError"; // Custom 404 error
+import { createIOServer } from "./sockets";
+import taskRoutes from "./routes/taskRoutes";
+import authenticateJWT from "./middleware/authMiddleware";
+import { login } from "./routes/authRoutes";
 
 // Create an Express application
 const app: Application = express();
 
 // Set up an HTTP server to integrate with Socket.IO
 const server = http.createServer(app);
-
-// Set up Socket.IO
-const io = new SocketIOServer(server, {
-  cors: {
-    origin: "*",
-  },
-});
-configureSockets(io); // Initialize socket configuration
+const io = createIOServer(server);
 
 // Global middleware
 app.use(cors()); // Enable Cross-Origin Resource Sharing
@@ -31,7 +25,8 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 // Routes
-app.use("/api/tasks", taskRoutes(io)); // Mount task-related routes at /api/tasks
+app.post("/api/login", login);
+app.use("/api/tasks", authenticateJWT, taskRoutes(io)); // Mount task-related routes at /api/tasks protected by jwt
 
 // Handle 404 errors (route not found)
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -40,11 +35,5 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Global error handler middleware
 app.use(errorHandler);
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
 
 export { server };
