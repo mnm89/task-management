@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Task } from "../models/Task";
-import { getTasks } from "../services/taskService";
+import React from "react";
+import styled from "styled-components";
 import TaskItem from "./TaskItem";
-import useWebSocket from "../hooks/useWebSocket";
+import { Task } from "../models/Task";
 
-const TaskList: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+interface TaskListProps {
+  tasks: Task[];
+}
 
-  useWebSocket(() => fetchTasks());
-  const fetchTasks = async () => {
-    const data = await getTasks();
-    setTasks(data);
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
+const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   return (
-    <div className="task-list-container">
-      <h2>Task List</h2>
+    <TaskListContainer>
       {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} onTaskUpdate={fetchTasks} />
+        <TaskItem key={task.id} task={task} />
       ))}
-    </div>
+    </TaskListContainer>
   );
 };
 
 export default TaskList;
+
+const TaskListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
